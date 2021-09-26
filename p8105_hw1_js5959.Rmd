@@ -1,0 +1,59 @@
+---
+title: "Homework1"
+author: "Junzhe Shao"
+date: "9/25/2021"
+output: github_document
+---
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Problem 1
+Starting with creating a example data frame: 
+```{r Problem 1}
+set.seed(123)
+
+example_df = tibble(
+  vec_random_sample = rnorm(10),
+  vec_char = c("a","b","c","d","e","f","g","h","i","j"),
+  vec_logical = vec_random_sample > 0,
+  vec_factor = factor(c("A","B","A","A","C","A","C","B","B","A"))
+)
+
+example_df
+
+```
+Take the mean of each variable, and we have:
+```{r}
+mean(pull(example_df, var = vec_random_sample))
+mean(pull(example_df, var = vec_char))
+mean(pull(example_df, var = vec_logical))
+mean(pull(example_df, var = vec_factor))
+```
+We can notice mean function can not applied with character or double.
+
+Try with `r as.numeric()` function for logical, character, and factor
+```{r eval=FALSE}
+as.numeric(pull(example_df, var = vec_char))
+as.numeric(pull(example_df, var = vec_logical))
+as.numeric(pull(example_df, var = vec_factor))
+```
+We discovered that factor and logic can be transformed to be numeric type. They both "embedded" with a numeric variable under a rule which can introduce convenience for practical programming, for instance, the mean value of a logic vector is the percentage of TRUE value.Therefore they can be operated by mean function just as a numeric vector. I suppose this is a Syntactic sugar for basic data struture of R.  
+
+# Problem 2
+```{r}
+data("penguins", package = "palmerpenguins")
+as_tibble(penguins)
+```
+Discription of penguins data with in line R code:   
+
+There are `r length(names(penguins))` variables which are `r names(penguins)`. The type of the variables are listed above as tibble.
+
+
+The scatter plot with species: 
+```{r}
+ggplot(penguins, aes(y = flipper_length_mm, x = bill_length_mm, color = species)) + geom_point()
+```
+
